@@ -1,23 +1,46 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { Api } from "./api/api";
 
 export default function App() {
-    const [users, setUsers] = useState();
-    const base = "http://localhost:5000/api";
-
     const getUsers = async () => {
         try {
-            const response = await fetch(`${base}/user`);
-            const data = await response.json();
+            const data = await Api.getUsers();
             console.log(data);
-            setUsers(data);
         } catch (error) {
             console.error("Error fetching users:", error);
         }
     };
 
+    const signUp = async () => {
+        try {
+            const data = await Api.signUp({
+                email: "123@gmail.com",
+                password: "123",
+                name: "Kate",
+            });
+            console.log(data);
+        } catch (error) {
+            console.error("Sign-up error:", error);
+        }
+    };
+
+    const signIn = async () => {
+        try {
+            const data = await Api.signIn({
+                email: "123@gmail.com",
+                password: "123",
+            });
+            console.log(data);
+        } catch (error) {
+            console.error("Sign-in error:", error);
+        }
+    };
+
     useEffect(() => {
         getUsers();
+        signUp();
+        signIn();
     }, []);
 
-    return <div>{users}</div>;
+    return <div>Hi!</div>;
 }
