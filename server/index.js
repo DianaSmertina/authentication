@@ -1,5 +1,9 @@
 const express = require('express');
 const PORT = process.env.PORT || 5000;
+require('./db');
+require('pg');
+const router = require('./routes/user-routes');
+const cors = require('cors');
 
 class Server {
     app = express();
@@ -15,7 +19,11 @@ class Server {
     }
 
     addMiddleware() {
+        this.app.use(cors({
+            origin: 'http://localhost:5173',
+        }));
         this.app.use(express.json());
+        this.app.use('/api', router);
     }
 }
 
