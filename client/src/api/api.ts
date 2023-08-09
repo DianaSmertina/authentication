@@ -1,10 +1,11 @@
+import { IAuthData, IUser } from "../types/types";
+
 export class Api {
     private static base = "http://localhost:5000/api";
 
-    static async signIn(data: {
-        email: string;
-        password: string;
-    }): Promise<string | { message: string }> {
+    static async signIn(
+        data: IAuthData
+    ): Promise<string | { message: string }> {
         const response = await fetch(`${Api.base}/sign-in`, {
             method: "POST",
             headers: {
@@ -15,11 +16,9 @@ export class Api {
         return response.json();
     }
 
-    static async signUp(data: {
-        email: string;
-        password: string;
-        name: string;
-    }): Promise<string | { message: string }> {
+    static async signUp(
+        data: IAuthData
+    ): Promise<string | { message: string }> {
         const response = await fetch(`${Api.base}/user`, {
             method: "POST",
             headers: {
@@ -35,14 +34,4 @@ export class Api {
         const data = await response.json();
         return data;
     }
-}
-
-export interface IUser {
-    id: number;
-    name: string;
-    email: string;
-    reg_date: string;
-    last_log_date: string;
-    status: string;
-    password_hash: string;
 }

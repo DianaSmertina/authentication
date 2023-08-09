@@ -1,46 +1,14 @@
-import { useEffect } from "react";
-import { Api } from "./api/api";
+import { Routes, Route } from "react-router-dom";
+import SignIn from "./components/auth/SignIn";
+import SignUp from "./components/auth/SignUp";
+import Users from "./components/users/Users";
 
 export default function App() {
-    const getUsers = async () => {
-        try {
-            const data = await Api.getUsers();
-            console.log(data);
-        } catch (error) {
-            console.error("Error fetching users:", error);
-        }
-    };
-
-    const signUp = async () => {
-        try {
-            const data = await Api.signUp({
-                email: "123@gmail.com",
-                password: "123",
-                name: "Kate",
-            });
-            console.log(data);
-        } catch (error) {
-            console.error("Sign-up error:", error);
-        }
-    };
-
-    const signIn = async () => {
-        try {
-            const data = await Api.signIn({
-                email: "123@gmail.com",
-                password: "123",
-            });
-            console.log(data);
-        } catch (error) {
-            console.error("Sign-in error:", error);
-        }
-    };
-
-    useEffect(() => {
-        getUsers();
-        signUp();
-        signIn();
-    }, []);
-
-    return <div>Hi!</div>;
+    return (
+        <Routes>
+            <Route path="/sign-in" element={<SignIn />} />
+            <Route path="/sign-up" element={<SignUp />} />
+            <Route path="/users" element={<Users />} />
+        </Routes>
+    );
 }
