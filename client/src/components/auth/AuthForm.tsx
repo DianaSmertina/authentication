@@ -4,12 +4,14 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { IAuthData } from "../../types/types";
 import { Api } from "../../api/api";
+import { Dispatch, SetStateAction } from "react";
 
 interface AuthFormProps {
     formType: "signIn" | "signUp";
+    setIsAuth: Dispatch<SetStateAction<boolean>>;
 }
 
-export default function AuthForm({ formType }: AuthFormProps) {
+export default function AuthForm({ formType, setIsAuth }: AuthFormProps) {
     const {
         register,
         formState: { errors },
@@ -38,6 +40,7 @@ export default function AuthForm({ formType }: AuthFormProps) {
             if (typeof data !== "string") {
                 toast.error(data.message);
             } else {
+                setIsAuth(true);
                 navigate("/users");
             }
             console.log(data);
