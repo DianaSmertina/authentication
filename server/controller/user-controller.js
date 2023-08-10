@@ -18,9 +18,9 @@ class UserController {
             const date = dateConvert.getToday();
             await db.query('UPDATE users SET last_log_date = ($1) WHERE email = ($2)', [date, email]);
             return res.json('Date updated');
-          } catch(e) {
-            return res.status(400).json({message: 'Update date error'});
-          }
+        } catch(e) {
+            return res.status(400).json({message: 'Date update error'});
+        }
     }
 
     async signIn(req, res) {
@@ -65,6 +65,17 @@ class UserController {
             } else {
                 res.status(400).json({ message: "Registration error" });
             }
+        }
+    }
+
+    async updateStatus(req, res) {
+        try {
+            const email = req.body.email; 
+            const newStatus = req.body.status;
+            await db.query('UPDATE users SET status = ($1) WHERE email = ($2)', [newStatus, email]);
+            return res.json('Status updated');
+        } catch(e) {
+            return res.status(400).json({message: 'Status update error'});
         }
     }
 }

@@ -47,4 +47,18 @@ export class Api {
         });
         return response.json();
     }
+
+    static async updateStatus(data: {
+        email: string;
+        status: string;
+    }): Promise<string | { message: string }> {
+        const response = await fetch(`${Api.base}/user`, {
+            method: "PUT",
+            headers: {
+                "Content-type": "application/json",
+            },
+            body: JSON.stringify(data),
+        });
+        return response.json();
+    }
 }

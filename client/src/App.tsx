@@ -6,14 +6,28 @@ import { useState } from "react";
 import PrivateRoute from "./components/privateRoute/PrivateRoute";
 
 export default function App() {
-    const [isAuth, setIsAuth] = useState(false);
+    const [currentUser, setCurrentUser] = useState("");
 
     return (
         <Routes>
-            <Route path="/sign-in" element={<SignIn setIsAuth={setIsAuth} />} />
-            <Route path="/sign-up" element={<SignUp setIsAuth={setIsAuth} />} />
-            <Route element={<PrivateRoute isAuth={isAuth} />}>
-                <Route path="/users" element={<Users />} />
+            <Route
+                path="/sign-in"
+                element={<SignIn setCurrentUser={setCurrentUser} />}
+            />
+            <Route
+                path="/sign-up"
+                element={<SignUp setCurrentUser={setCurrentUser} />}
+            />
+            <Route element={<PrivateRoute currentUser={currentUser} />}>
+                <Route
+                    path="/users"
+                    element={
+                        <Users
+                            currentUser={currentUser}
+                            setCurrentUser={setCurrentUser}
+                        />
+                    }
+                />
             </Route>
         </Routes>
     );

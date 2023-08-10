@@ -1,11 +1,17 @@
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Api } from "../../api/api";
 import { IUser } from "../../types/types";
 import UsersTable from "./UsersTable";
 import ToolBar from "./ToolBar";
 
-export default function Users() {
+interface IUsersProps {
+    currentUser: string;
+    setCurrentUser: Dispatch<SetStateAction<string>>;
+}
+
+export default function Users({ currentUser, setCurrentUser }: IUsersProps) {
     const [users, setUsers] = useState<Array<IUser>>();
+    const [selectedEmails, setSelectedEmails] = useState<Array<string>>([]);
 
     const getUsers = async () => {
         try {
@@ -26,8 +32,12 @@ export default function Users() {
 
     return (
         <>
-            <ToolBar />
-            <UsersTable users={users} />
+            <ToolBar
+                currentUser={currentUser}
+                selectedEmails={selectedEmails}
+                setCurrentUser={setCurrentUser}
+            />
+            <UsersTable users={users} setSelectedEmails={setSelectedEmails} />
         </>
     );
 }

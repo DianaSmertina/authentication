@@ -8,10 +8,10 @@ import { Dispatch, SetStateAction } from "react";
 
 interface IAuthFormProps {
     formType: "signIn" | "signUp";
-    setIsAuth: Dispatch<SetStateAction<boolean>>;
+    setCurrentUser: Dispatch<SetStateAction<string>>;
 }
 
-export default function AuthForm({ formType, setIsAuth }: IAuthFormProps) {
+export default function AuthForm({ formType, setCurrentUser }: IAuthFormProps) {
     const {
         register,
         formState: { errors },
@@ -41,7 +41,7 @@ export default function AuthForm({ formType, setIsAuth }: IAuthFormProps) {
             if (typeof data !== "string") {
                 toast.error(data.message);
             } else {
-                setIsAuth(true);
+                setCurrentUser(formData.email);
                 navigate("/users");
             }
         } catch (error) {

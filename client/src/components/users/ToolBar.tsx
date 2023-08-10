@@ -1,15 +1,71 @@
 import Button from "react-bootstrap/Button";
 import Stack from "react-bootstrap/Stack";
 import "./ToolBar.scss";
+import { Api } from "../../api/api";
+import { ToastContainer, toast } from "react-toastify";
+import { Dispatch, SetStateAction } from "react";
+import { useNavigate } from "react-router-dom";
 
-export default function ToolBar() {
+interface IToolBarProps {
+    currentUser: string;
+    selectedEmails: Array<string>;
+    setCurrentUser: Dispatch<SetStateAction<string>>;
+}
+
+export default function ToolBar({
+    currentUser,
+    selectedEmails,
+    setCurrentUser,
+}: IToolBarProps) {
+    const navigate = useNavigate();
+
+    const statusChangeSwitcher = async (newStatus: string) => {
+        const updatePromises = [];
+        for (const email of selectedEmails) {
+            const updatePromise = Api.updateStatus({
+                email: email,
+                status: newStatus,
+            });
+            updatePromises.push(updatePromise);
+        }
+        try {
+            await Promise.all(updatePromises);
+            toast.info(`Selected users are ${newStatus}`);
+            logOut(newStatus);
+        } catch (error) {
+            console.error("Error updating status:", error);
+        }
+    };
+
+    const logOut = (newStatus: string) => {
+        if (newStatus === "active") return;
+        if (selectedEmails.includes(currentUser)) {
+            setCurrentUser("");
+            navigate("/sign-in");
+        }
+    };
+
     return (
-        <Stack direction="horizontal" gap={1} className="mb-2">
-            <Button className="btn btn-primary" size="sm">
-                Block
-            </Button>
-            <Button className="btn btn-primary btn-picture unblock" size="sm" />
-            <Button className="btn btn-primary btn-picture delete" size="sm" />
-        </Stack>
+        <>
+            <ToastContainer />
+            <Stack direction="horizontal" gap={1} className="mb-2">
+                <Button
+                    className="btn btn-primary"
+                    size="sm"
+                    onClick={async () => await statusChangeSwitcher("blocked")}
+                >
+                    Block
+                </Button>
+                <Button
+                    className="btn btn-primary btn-picture unblock"
+                    size="sm"
+                    onClick={async () => await statusChangeSwitcher("active")}
+                />
+                <Button
+                    className="btn btn-primary btn-picture delete"
+                    size="sm"
+                />
+            </Stack>
+        </>
     );
 }

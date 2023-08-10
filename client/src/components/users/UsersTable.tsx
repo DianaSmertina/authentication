@@ -1,17 +1,38 @@
 import { Table } from "react-bootstrap";
 import { IUser } from "../../types/types";
 import UserRow from "./UserRow";
-import { ChangeEvent, useCallback, useState } from "react";
+import {
+    ChangeEvent,
+    Dispatch,
+    SetStateAction,
+    useCallback,
+    useEffect,
+    useState,
+} from "react";
+
+interface IUsersTableProps {
+    users: Array<IUser> | undefined;
+    setSelectedEmails: Dispatch<SetStateAction<string[]>>;
+}
 
 export default function UsersTable({
     users,
-}: {
-    users: Array<IUser> | undefined;
-}) {
+    setSelectedEmails,
+}: IUsersTableProps) {
     const [selectAllSelected, setSelectAllSelected] = useState(false);
     const [checked, setChecked] = useState(
         new Array(users?.length).fill(false)
     );
+
+    useEffect(() => {
+        setSelectedEmails(() => {
+            const emails: Array<string> = [];
+            checked.forEach((el, i) => {
+                if (el && users) emails.push(users[i].email);
+            });
+            return emails;
+        });
+    }, [checked]);
 
     const handleOptionChange = useCallback(
         (index: number) => (newValueEvent: ChangeEvent<HTMLInputElement>) => {
