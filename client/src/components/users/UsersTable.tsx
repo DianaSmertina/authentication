@@ -23,14 +23,13 @@ export default function UsersTable({
         [checked]
     );
 
-    const handleSelectAllChange = useCallback(
-        (selectAllEvent: ChangeEvent<HTMLInputElement>) => {
-            const selectAllValue = selectAllEvent.target.checked;
-            setSelectAllSelected(selectAllValue);
-            setChecked(new Array(users?.length).fill(selectAllValue));
-        },
-        []
-    );
+    const handleSelectAllChange = (
+        selectAllEvent: ChangeEvent<HTMLInputElement>
+    ) => {
+        const selectAllValue = selectAllEvent.target.checked;
+        setSelectAllSelected(selectAllValue);
+        setChecked(new Array(users?.length).fill(selectAllValue));
+    };
 
     return (
         <Table striped bordered hover>
