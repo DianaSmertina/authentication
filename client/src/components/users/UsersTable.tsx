@@ -52,12 +52,14 @@ export default function UsersTable({
             </thead>
             <tbody>
                 {users?.map((user, i) => (
-                    <tr key={user.id}>
-                        <input
-                            type="checkbox"
-                            checked={checked[i]}
-                            onChange={handleOptionChange(i)}
-                        />
+                    <tr key={user.id} className="text-align-center">
+                        <td>
+                            <input
+                                type="checkbox"
+                                checked={checked[i]}
+                                onChange={handleOptionChange(i)}
+                            />
+                        </td>
                         <UserRow key={user.id} user={user} />
                     </tr>
                 ))}

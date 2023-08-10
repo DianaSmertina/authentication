@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Api } from "../../api/api";
 import { IUser } from "../../types/types";
 import UsersTable from "./UsersTable";
+import ToolBar from "./ToolBar";
 
 export default function Users() {
     const [users, setUsers] = useState<Array<IUser>>();
@@ -23,5 +24,10 @@ export default function Users() {
         getUsers();
     }, []);
 
-    return <UsersTable users={users} />;
+    return (
+        <>
+            <ToolBar />
+            <UsersTable users={users} />
+        </>
+    );
 }
