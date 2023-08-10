@@ -12,6 +12,17 @@ class UserController {
         }
     }
 
+    async updateLastLogDate(req, res) {
+        try {
+            const email = req.body.email; 
+            const date = dateConvert.getToday();
+            await db.query('UPDATE users SET last_log_date = ($1) WHERE email = ($2)', [date, email]);
+            return res.json('Date updated');
+          } catch(e) {
+            return res.status(400).json({message: 'Update date error'});
+          }
+    }
+
     async signIn(req, res) {
         try {
             const email = await req.body.email;
@@ -20,14 +31,12 @@ class UserController {
                 "SELECT * FROM users where email = $1",
                 [email]
             );
-            if (user.rowCount === 0)
-                return res.status(400).json({ message: "User not found" });
+            if (user.rowCount === 0) return res.status(400).json({ message: "User not found" });
             const isRightPassword = await bcrypt.compare(
                 password,
                 user.rows[0].password_hash
             );
-            if (!isRightPassword)
-                return res.status(400).json({ message: "Wrong password" });
+            if (!isRightPassword) return res.status(400).json({ message: "Wrong password" });
             return res.json("ok");
         } catch (e) {
             console.log(e);

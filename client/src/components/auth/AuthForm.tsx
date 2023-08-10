@@ -29,6 +29,7 @@ export default function AuthForm({ formType, setIsAuth }: IAuthFormProps) {
                     email: formData.email,
                     password: formData.password,
                 });
+                await Api.updateLogDate({ email: formData.email });
             } else {
                 data = await Api.signUp({
                     email: formData.email,
@@ -43,7 +44,6 @@ export default function AuthForm({ formType, setIsAuth }: IAuthFormProps) {
                 setIsAuth(true);
                 navigate("/users");
             }
-            console.log(data);
         } catch (error) {
             toast.error(`${formType} error: ${error}`);
         }

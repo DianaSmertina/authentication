@@ -34,4 +34,17 @@ export class Api {
         const data = await response.json();
         return data;
     }
+
+    static async updateLogDate(data: {
+        email: string;
+    }): Promise<string | { message: string }> {
+        const response = await fetch(`${Api.base}/sign-in`, {
+            method: "PUT",
+            headers: {
+                "Content-type": "application/json",
+            },
+            body: JSON.stringify(data),
+        });
+        return response.json();
+    }
 }
