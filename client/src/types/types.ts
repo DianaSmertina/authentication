@@ -5,7 +5,8 @@ export interface IUser {
     reg_date: string;
     last_log_date: string;
     status: string;
-    password_hash: string;
+    password_hash?: string;
+    isChecked?: boolean;
 }
 
 export interface IAuthData {

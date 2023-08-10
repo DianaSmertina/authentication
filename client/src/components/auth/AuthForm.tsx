@@ -6,12 +6,12 @@ import { IAuthData } from "../../types/types";
 import { Api } from "../../api/api";
 import { Dispatch, SetStateAction } from "react";
 
-interface AuthFormProps {
+interface IAuthFormProps {
     formType: "signIn" | "signUp";
     setIsAuth: Dispatch<SetStateAction<boolean>>;
 }
 
-export default function AuthForm({ formType, setIsAuth }: AuthFormProps) {
+export default function AuthForm({ formType, setIsAuth }: IAuthFormProps) {
     const {
         register,
         formState: { errors },
