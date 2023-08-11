@@ -3,6 +3,7 @@ import { Api } from "../../api/api";
 import { IUser } from "../../types/types";
 import UsersTable from "./UsersTable";
 import ToolBar from "./ToolBar";
+import { Container, Row, Col } from "react-bootstrap";
 
 interface IUsersProps {
     currentUser: string;
@@ -27,15 +28,31 @@ export default function Users({ currentUser, setCurrentUser }: IUsersProps) {
     }, []);
 
     return (
-        <>
-            <ToolBar
-                currentUser={currentUser}
-                selectedEmails={selectedEmails}
-                setCurrentUser={setCurrentUser}
-                getUsers={getUsers}
-            />
-            <div>Current user: {currentUser}</div>
-            <UsersTable users={users} setSelectedEmails={setSelectedEmails} />
-        </>
+        <Container
+            fluid
+            className="d-flex align-items-center justify-content-center vh-100"
+        >
+            <Row>
+                <Row className="mb-3 justify-content-between">
+                    <Col className="col-auto">
+                        <ToolBar
+                            currentUser={currentUser}
+                            selectedEmails={selectedEmails}
+                            setCurrentUser={setCurrentUser}
+                            getUsers={getUsers}
+                        />
+                    </Col>
+                    <Col className="col-auto">
+                        <div>Current user: {currentUser}</div>
+                    </Col>
+                </Row>
+                <Row>
+                    <UsersTable
+                        users={users}
+                        setSelectedEmails={setSelectedEmails}
+                    />
+                </Row>
+            </Row>
+        </Container>
     );
 }

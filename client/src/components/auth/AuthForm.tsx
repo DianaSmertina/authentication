@@ -5,6 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { IAuthData } from "../../types/types";
 import { Api } from "../../api/api";
 import { Dispatch, SetStateAction } from "react";
+import { Button, Container, Form, Row } from "react-bootstrap";
 
 interface IAuthFormProps {
     formType: "signIn" | "signUp";
@@ -68,47 +69,77 @@ export default function AuthForm({ formType, setCurrentUser }: IAuthFormProps) {
     };
 
     return (
-        <>
+        <Container
+            fluid
+            className="d-flex align-items-center justify-content-center vh-100"
+        >
             <ToastContainer />
-            <h1>{formType === "signIn" ? "Sign In" : "Sign Up"}</h1>
-            <form onSubmit={handleSubmit(onSubmit)}>
-                {formType === "signUp" && (
-                    <>
-                        <input
-                            placeholder="Your name"
-                            type="name"
-                            {...register("name", {
-                                required: true,
-                            })}
-                        />
-                        {errors.name && <div>Please enter your name</div>}
-                    </>
-                )}
-                <input
-                    placeholder="Your e-mail"
-                    type="email"
-                    {...register("email", {
-                        required: true,
-                    })}
-                />
-                {errors.email && <div>Please enter the email</div>}
-                <input
-                    placeholder="Create password"
-                    type="password"
-                    {...register("password", {
-                        required: true,
-                    })}
-                ></input>
-                {errors.password && <div>Please enter password</div>}
-                <input type="submit" value="Submit"></input>
-                <input
-                    type="button"
-                    value={`Switch to ${
-                        formType === "signIn" ? "Sign Up" : "Sign In"
-                    }`}
-                    onClick={onSwitchForm}
-                ></input>
-            </form>
-        </>
+            <Row className="border p-5">
+                <Row>
+                    <h1>{formType === "signIn" ? "Sign In" : "Sign Up"}</h1>
+                </Row>
+                <Row>
+                    <Form onSubmit={handleSubmit(onSubmit)}>
+                        {formType === "signUp" && (
+                            <Form.Group className="mb-3">
+                                <Form.Label>Your name:</Form.Label>
+                                <Form.Control
+                                    placeholder="Name"
+                                    type="name"
+                                    {...register("name", {
+                                        required: true,
+                                    })}
+                                />
+                                {errors.name && (
+                                    <Form.Text>
+                                        Please enter your name
+                                    </Form.Text>
+                                )}
+                            </Form.Group>
+                        )}
+                        <Form.Group className="mb-3">
+                            <Form.Label>Email:</Form.Label>
+                            <Form.Control
+                                placeholder="example@gmail.com"
+                                type="email"
+                                {...register("email", {
+                                    required: true,
+                                })}
+                            />
+                            {errors.email && (
+                                <Form.Text>Please enter the email</Form.Text>
+                            )}
+                        </Form.Group>
+                        <Form.Group className="mb-4">
+                            <Form.Label>Password:</Form.Label>
+                            <Form.Control
+                                placeholder="Create password"
+                                type="password"
+                                {...register("password", {
+                                    required: true,
+                                })}
+                            ></Form.Control>
+                            {errors.password && (
+                                <Form.Text>Please enter password</Form.Text>
+                            )}
+                        </Form.Group>
+                        <Button
+                            type="submit"
+                            variant="primary"
+                            value="Submit"
+                            className="mr-2"
+                        >
+                            Submit
+                        </Button>
+                        <Button
+                            onClick={onSwitchForm}
+                            variant="secondary"
+                        >{`Switch to ${
+                            formType === "signIn" ? "Sign Up" : "Sign In"
+                        }`}</Button>
+                    </Form>
+                </Row>
+            </Row>
+        </Container>
     );
 }
