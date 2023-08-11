@@ -25,6 +25,7 @@ export default function AuthForm({ formType, setCurrentUser }: IAuthFormProps) {
         try {
             let data;
             if (formType === "signIn") {
+                if (!(await isStatusActive(formData.email))) return;
                 data = await Api.signIn({
                     email: formData.email,
                     password: formData.password,
@@ -47,6 +48,15 @@ export default function AuthForm({ formType, setCurrentUser }: IAuthFormProps) {
         } catch (error) {
             toast.error(`${formType} error: ${error}`);
         }
+    };
+
+    const isStatusActive = async (email: string) => {
+        const status = await Api.checkStatus(email);
+        if (status === "blocked") {
+            toast.info("Your status is blocked");
+            return false;
+        }
+        return true;
     };
 
     const onSwitchForm = () => {

@@ -22,14 +22,7 @@ export default function ToolBar({
     const navigate = useNavigate();
 
     const statusChangeSwitcher = async (newStatus: string) => {
-        const userStatus = await checkStatus();
-        if (userStatus === "blocked") {
-            toast.info("You were blocked by another user");
-            setTimeout(() => {
-                logOut();
-            }, 2000);
-            return;
-        }
+        if (!isStatusActive()) return;
         const updatePromises = [];
         for (const email of selectedEmails) {
             const updatePromise = Api.updateStatus({
@@ -51,7 +44,7 @@ export default function ToolBar({
     const checkSelectedEmails = (newStatus: string) => {
         if (newStatus === "active") return;
         if (selectedEmails.includes(currentUser)) {
-            logOut;
+            logOut();
         }
     };
 
@@ -60,9 +53,16 @@ export default function ToolBar({
         navigate("/sign-in");
     };
 
-    const checkStatus = async () => {
+    const isStatusActive = async () => {
         const status = await Api.checkStatus(currentUser);
-        return status;
+        if (status === "blocked") {
+            toast.info("You were blocked");
+            setTimeout(() => {
+                logOut();
+            }, 2000);
+            return false;
+        }
+        return true;
     };
 
     return (

@@ -34,6 +34,7 @@ export default function Users({ currentUser, setCurrentUser }: IUsersProps) {
                 setCurrentUser={setCurrentUser}
                 getUsers={getUsers}
             />
+            <div>Current user: {currentUser}</div>
             <UsersTable users={users} setSelectedEmails={setSelectedEmails} />
         </>
     );
