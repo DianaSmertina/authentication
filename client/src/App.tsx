@@ -11,7 +11,7 @@ export default function App() {
     return (
         <Routes>
             <Route
-                path="/sign-in"
+                path="/"
                 element={<SignIn setCurrentUser={setCurrentUser} />}
             />
             <Route

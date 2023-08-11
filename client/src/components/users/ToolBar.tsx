@@ -55,7 +55,7 @@ export default function ToolBar({
 
     const logOut = () => {
         setCurrentUser("");
-        navigate("/sign-in");
+        navigate("/");
     };
 
     const isStatusActive = async () => {

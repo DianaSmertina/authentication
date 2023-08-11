@@ -64,7 +64,7 @@ export default function AuthForm({ formType, setCurrentUser }: IAuthFormProps) {
         if (formType === "signIn") {
             navigate("/sign-up");
         } else {
-            navigate("/sign-in");
+            navigate("/");
         }
     };
 
