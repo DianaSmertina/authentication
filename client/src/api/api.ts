@@ -30,8 +30,11 @@ export class Api {
     }
 
     static async getUsers(): Promise<Array<IUser>> {
-        const response = await fetch(`${Api.base}/user`);
+        const response = await fetch(`${Api.base}/users`);
         const data = await response.json();
+        data.forEach((el: IUser) => {
+            delete el.password_hash;
+        });
         return data;
     }
 
@@ -60,5 +63,11 @@ export class Api {
             body: JSON.stringify(data),
         });
         return response.json();
+    }
+
+    static async checkStatus(email: string): Promise<string> {
+        const response = await fetch(`${Api.base}/user/${email}`);
+        const status = await response.json();
+        return status;
     }
 }

@@ -72,10 +72,20 @@ class UserController {
         try {
             const email = req.body.email; 
             const newStatus = req.body.status;
-            await db.query('UPDATE users SET status = ($1) WHERE email = ($2)', [newStatus, email]);
-            return res.json('Status updated');
+            await db.query("UPDATE users SET status = ($1) WHERE email = ($2)", [newStatus, email]);
+            return res.json("Status updated");
         } catch(e) {
-            return res.status(400).json({message: 'Status update error'});
+            return res.status(400).json({message: "Status update error"});
+        }
+    }
+
+    async checkStatus(req, res) {
+        try {
+            const email = req.params.email
+            const status = await db.query("SELECT status FROM users WHERE email = ($1)", [email]);
+            return res.json(status.rows[0].status);
+        } catch (e) {
+            console.log(e);
         }
     }
 }

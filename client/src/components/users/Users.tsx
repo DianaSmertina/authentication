@@ -16,10 +16,6 @@ export default function Users({ currentUser, setCurrentUser }: IUsersProps) {
     const getUsers = async () => {
         try {
             const data = await Api.getUsers();
-            data.forEach((el) => {
-                delete el.password_hash;
-                el.isChecked = false;
-            });
             setUsers(data);
         } catch (error) {
             console.error("Error fetching users:", error);
@@ -36,6 +32,7 @@ export default function Users({ currentUser, setCurrentUser }: IUsersProps) {
                 currentUser={currentUser}
                 selectedEmails={selectedEmails}
                 setCurrentUser={setCurrentUser}
+                getUsers={getUsers}
             />
             <UsersTable users={users} setSelectedEmails={setSelectedEmails} />
         </>

@@ -10,16 +10,26 @@ interface IToolBarProps {
     currentUser: string;
     selectedEmails: Array<string>;
     setCurrentUser: Dispatch<SetStateAction<string>>;
+    getUsers: () => Promise<void>;
 }
 
 export default function ToolBar({
     currentUser,
     selectedEmails,
     setCurrentUser,
+    getUsers,
 }: IToolBarProps) {
     const navigate = useNavigate();
 
     const statusChangeSwitcher = async (newStatus: string) => {
+        const userStatus = await checkStatus();
+        if (userStatus === "blocked") {
+            toast.info("You were blocked by another user");
+            setTimeout(() => {
+                logOut();
+            }, 2000);
+            return;
+        }
         const updatePromises = [];
         for (const email of selectedEmails) {
             const updatePromise = Api.updateStatus({
@@ -31,18 +41,28 @@ export default function ToolBar({
         try {
             await Promise.all(updatePromises);
             toast.info(`Selected users are ${newStatus}`);
-            logOut(newStatus);
+            await getUsers();
+            checkSelectedEmails(newStatus);
         } catch (error) {
             console.error("Error updating status:", error);
         }
     };
 
-    const logOut = (newStatus: string) => {
+    const checkSelectedEmails = (newStatus: string) => {
         if (newStatus === "active") return;
         if (selectedEmails.includes(currentUser)) {
-            setCurrentUser("");
-            navigate("/sign-in");
+            logOut;
         }
+    };
+
+    const logOut = () => {
+        setCurrentUser("");
+        navigate("/sign-in");
+    };
+
+    const checkStatus = async () => {
+        const status = await Api.checkStatus(currentUser);
+        return status;
     };
 
     return (
