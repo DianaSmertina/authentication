@@ -62,9 +62,10 @@ export default function ToolBar({
         const status = await Api.checkStatus(currentUser);
         if (status === "active") return true;
         toast.info("You were blocked or deleted");
+        const showTime = 2000;
         setTimeout(() => {
             logOut();
-        }, 2000);
+        }, showTime);
         return false;
     };
 

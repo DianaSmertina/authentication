@@ -12,7 +12,10 @@ export default function UserRow({ user }: IUserRowProps) {
     const createTableData = (currentUser: IUser) => {
         currentUser.reg_date = createDate(user.reg_date);
         currentUser.last_log_date = createDate(user.last_log_date);
-        return Object.entries(user).map((el) => <td key={el[0]}>{el[1]}</td>);
+        return Object.entries(user).map((el) => {
+            const [propName, propValue] = el;
+            return <td key={propName}>{propValue}</td>;
+        });
     };
 
     return createTableData(user);
