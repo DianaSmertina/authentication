@@ -20,7 +20,7 @@ class Server {
 
     addMiddleware() {
         this.app.use(cors({
-            origin: 'https://main--brilliant-licorice-cc6be1.netlify.app/',
+            origin: 'https://brilliant-licorice-cc6be1.netlify.app',
         }));
         this.app.use(express.json());
         this.app.use('/api', router);
