@@ -113,7 +113,7 @@ export default function AuthForm({ formType, setCurrentUser }: IAuthFormProps) {
                         <Form.Group className="mb-4">
                             <Form.Label>Password:</Form.Label>
                             <Form.Control
-                                placeholder="Create password"
+                                placeholder="Enter password"
                                 type="password"
                                 {...register("password", {
                                     required: true,
