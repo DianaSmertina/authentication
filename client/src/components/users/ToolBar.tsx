@@ -21,14 +21,19 @@ export default function ToolBar({
 }: IToolBarProps) {
     const navigate = useNavigate();
 
-    const statusChangeSwitcher = async (newStatus: string) => {
-        if (!isStatusActive()) return;
+    const handleUser = async (newStatus: string, action: string) => {
+        if (!(await isStatusActive())) return;
         const updatePromises = [];
         for (const email of selectedEmails) {
-            const updatePromise = Api.updateStatus({
-                email: email,
-                status: newStatus,
-            });
+            let updatePromise;
+            if (action === "changeStatus") {
+                updatePromise = Api.updateStatus({
+                    email: email,
+                    status: newStatus,
+                });
+            } else {
+                updatePromise = Api.deleteUser(email);
+            }
             updatePromises.push(updatePromise);
         }
         try {
@@ -37,7 +42,7 @@ export default function ToolBar({
             await getUsers();
             checkSelectedEmails(newStatus);
         } catch (error) {
-            console.error("Error updating status:", error);
+            console.error("Error:", error);
         }
     };
 
@@ -55,14 +60,12 @@ export default function ToolBar({
 
     const isStatusActive = async () => {
         const status = await Api.checkStatus(currentUser);
-        if (status === "blocked") {
-            toast.info("You were blocked");
-            setTimeout(() => {
-                logOut();
-            }, 2000);
-            return false;
-        }
-        return true;
+        if (status === "active") return true;
+        toast.info("You were blocked or deleted");
+        setTimeout(() => {
+            logOut();
+        }, 2000);
+        return false;
     };
 
     return (
@@ -72,18 +75,23 @@ export default function ToolBar({
                 <Button
                     className="btn btn-primary"
                     size="sm"
-                    onClick={async () => await statusChangeSwitcher("blocked")}
+                    onClick={async () =>
+                        await handleUser("blocked", "changeStatus")
+                    }
                 >
                     Block
                 </Button>
                 <Button
                     className="btn btn-primary btn-picture unblock"
                     size="sm"
-                    onClick={async () => await statusChangeSwitcher("active")}
+                    onClick={async () =>
+                        await handleUser("active", "changeStatus")
+                    }
                 />
                 <Button
                     className="btn btn-primary btn-picture delete"
                     size="sm"
+                    onClick={async () => await handleUser("deleted", "delete")}
                 />
             </Stack>
         </>

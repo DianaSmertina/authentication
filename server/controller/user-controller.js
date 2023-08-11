@@ -83,9 +83,28 @@ class UserController {
         try {
             const email = req.params.email
             const status = await db.query("SELECT status FROM users WHERE email = ($1)", [email]);
-            return res.json(status.rows[0].status);
+            if (status.rowCount > 0) {
+                return res.json(status.rows[0].status);
+            } else {
+                return res.status(404).json({ message: 'User not found' });
+            }
         } catch (e) {
             console.log(e);
+        }
+    }
+
+    async deleteUser(req, res) {
+        try {
+            const email = req.params.email;
+            const result = await db.query("DELETE FROM users WHERE email = ($1)", [email]);
+            if (result.rowCount > 0) {
+                return res.json("User deleted successfully");
+            } else {
+                return res.status(404).json({ message: 'User not found' });
+            }
+        } catch (error) {
+            console.error('Error deleting user:', error);
+            return res.status(500).json({ message: 'Internal server error' });
         }
     }
 }

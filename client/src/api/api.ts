@@ -70,4 +70,14 @@ export class Api {
         const status = await response.json();
         return status;
     }
+
+    static async deleteUser(
+        email: string
+    ): Promise<string | { message: string }> {
+        const response = await fetch(`${Api.base}/delete-user/${email}`, {
+            method: "DELETE",
+        });
+        const result = await response.json();
+        return result;
+    }
 }
