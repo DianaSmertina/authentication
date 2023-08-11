@@ -1,7 +1,7 @@
 import { IAuthData, IUser } from "../types/types";
 
 export class Api {
-    private static base = "http://localhost:5000/api";
+    private static base = "https://authentication-n6p6.onrender.com/api";
 
     static async signIn(
         data: IAuthData
